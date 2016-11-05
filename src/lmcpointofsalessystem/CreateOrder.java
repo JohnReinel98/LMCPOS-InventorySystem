@@ -58,7 +58,6 @@ public class CreateOrder extends javax.swing.JFrame {
     ResultSet rs;
     
     DefaultTableModel tblModel = new DefaultTableModel() ;
-    DefaultTableModel tblModel1 = new DefaultTableModel() ;
     public void Clock (){
         Thread clock = new Thread(){
             public void run(){
@@ -504,8 +503,7 @@ public class CreateOrder extends javax.swing.JFrame {
                                                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                                     .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
                                                     .addComponent(jLabel17)))
-                                            .addGroup(jPanel2Layout.createSequentialGroup()
-                                                .addGap(37, 37, 37)
+                                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                                                 .addComponent(btnProceed)
                                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                                 .addComponent(btnClearRow)
@@ -747,7 +745,8 @@ public class CreateOrder extends javax.swing.JFrame {
             fillTable();
         }
     }//GEN-LAST:event_cmbFilterItemStateChanged
-
+ArrayList<Integer> ii = new ArrayList<Integer>();
+ArrayList<String> oo = new ArrayList<String>();
 ArrayList<Float> ll = new ArrayList<Float>();
     private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
         try{
@@ -789,26 +788,26 @@ ArrayList<Float> ll = new ArrayList<Float>();
                 int qty1 = rs.getInt("Quantity");
                 
                 if(qty2buy >= qty1){
-            JOptionPane.showMessageDialog(this, "Order quantity is higher than stocks !");
+                    JOptionPane.showMessageDialog(this, "Order quantity is higher than stocks !");
                 }else if(qty2buy < qty1){
                 
-            String as = "";
-            boolean exists = false;
-            for (int x=0; x<tblOrder.getRowCount(); x++) {    
-            as = tblOrder.getValueAt(x, 0).toString().trim();
-            if(itemno.equals(as))
-            {
-            exists = true;
-                JOptionPane.showMessageDialog(null, "Can not add duplicate item !");
-                
-            break;
-            }
-            }
+                    String as = "";
+                    boolean exists = false;
+                    for (int x=0; x<tblOrder.getRowCount(); x++) {    
+                    as = tblOrder.getValueAt(x, 0).toString().trim();
+                    if(itemno.equals(as))
+                    {
+                    exists = true;
+                        JOptionPane.showMessageDialog(null, "Can not add duplicate item !");
+                    break;
+                    }
+                    }
             
             if(!exists){
             int totalqty = qty1 - qty2buy;
             s.executeUpdate("Update Stocks set Quantity="+totalqty+" where ItemNo= "+itemno+"");
-            
+            ii.add(qty2buy);
+            oo.add(itemno);
             float b = (total * disc)/100;
             
             total = total - b;
@@ -844,24 +843,6 @@ ArrayList<Float> ll = new ArrayList<Float>();
         }
         
     }//GEN-LAST:event_btnAddActionPerformed
-void checker(){
-    
-        try {
-            String qty1 = spnQtybuy.getValue().toString();
-            rs = s.executeQuery("Select Qauntity from Stocks");
-            int qtyhold = Integer.parseInt(qty1);
-            int qty = rs.getInt("Quantity");
-            if(qtyhold>=qty){
-                
-            }
-            else{
-                System.out.println("Not enough");
-            }
-            
-        } catch (SQLException ex) {
-            Logger.getLogger(CreateOrder.class.getName()).log(Level.SEVERE, null, ex);
-        }
-}
     
     private void btnCalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCalActionPerformed
         Calculator calc = new Calculator();
@@ -874,14 +855,13 @@ void checker(){
 
     private void btnClearRowActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnClearRowActionPerformed
         try{
+        String itemno = txtItemNo.getText();
         tblOrder.scrollRectToVisible(tblOrder.getCellRect(tblOrder.getRowCount()-1, 0, true));
         DefaultTableModel model = (DefaultTableModel) tblOrder.getModel();
         int lastRow = tblOrder.convertRowIndexToView(model.getRowCount() - 1);
         tblOrder.setRowSelectionInterval(lastRow, lastRow);
-        int totalitems = Integer.parseInt(txtTotalItems.getText());
         int numRows = tblOrder.getSelectedRows().length;
         
-        int num = tblOrder.getSelectedRowCount();
         if(txtTotalItems.getText().equals("0")){
             JOptionPane.showMessageDialog(null, "Please select atleast one order !");
         }else{
@@ -903,21 +883,31 @@ void checker(){
             diff -= ll.get(i);
             txtTotalPrice.setText(String.valueOf(diff).replace("-", ""));
         }
-        
         txtareatotal.setText(formatedString);
-//        String sql = "select Quantity from Stocks where ItemNo= "+itemno+"";
-//        Object return1 = tblOrder.getValueAt(0, 3);
+        
+        
         try {
-            //rs=s.executeQuery(sql);
+            for (int i=0; i<oo.size(); i++){
+                String returns= oo.get(i);
+            String sql = "Select Quantity from Stocks where ItemNo = '"+returns+"'";
+            rs=s.executeQuery(sql);
             if(rs.next()){
             int qty1 = rs.getInt("Quantity");
-            //int totalqty = qty1 + return1;
-            //s.executeUpdate("Update Stocks set Quantity="+totalqty+" where ItemNo= "+itemno+"");
+            int totalAmount=0;
+            for (int o=0; o<ii.size(); o++){
+                int totalprice= ii.get(o);
+                totalAmount = qty1 + totalprice; 
+                s.executeUpdate("Update Stocks set Quantity="+totalAmount+" where ItemNo= '"+returns+"'");
             }
+            
+            }
+            fillTable();
+            }
+            
         } catch (SQLException ex) {
-            //Logger.getLogger(CreateOrder.class.getName()).log(Level.SEVERE, null, ex);
             JOptionPane.showMessageDialog(null, "Please select atleast one order !");
         }
+        
         
         if(ll.size() == 0){
             System.out.println("Array Empty");
