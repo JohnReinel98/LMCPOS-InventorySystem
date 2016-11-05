@@ -8,7 +8,7 @@ import javax.swing.UIManager;
 
 /**
  *
- * @author JohnReinel
+ * @author JohnReinel and Friends
  */
 public class LMCPointofSalesSystem {
         public static Statement s;

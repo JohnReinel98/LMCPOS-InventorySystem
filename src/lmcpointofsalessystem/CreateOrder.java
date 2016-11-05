@@ -8,6 +8,7 @@ import com.lowagie.text.FontFactory;
 import com.lowagie.text.PageSize;
 import com.lowagie.text.Paragraph;
 import com.lowagie.text.Phrase;
+import com.lowagie.text.Rectangle;
 import com.lowagie.text.pdf.PdfContentByte;
 import com.lowagie.text.pdf.PdfPCell;
 import com.lowagie.text.pdf.PdfPTable;
@@ -46,6 +47,7 @@ import java.io.FileOutputStream;
 import java.util.Date;
 import javax.swing.JTable;
 import javax.swing.table.TableColumn;
+import javax.swing.table.TableModel;
 /**
  *
  * @author JohnReinel
@@ -55,7 +57,8 @@ public class CreateOrder extends javax.swing.JFrame {
     public static Connection con;
     ResultSet rs;
     
-    DefaultTableModel tblModel = new DefaultTableModel();
+    DefaultTableModel tblModel = new DefaultTableModel() ;
+    DefaultTableModel tblModel1 = new DefaultTableModel() ;
     public void Clock (){
         Thread clock = new Thread(){
             public void run(){
@@ -169,7 +172,6 @@ public class CreateOrder extends javax.swing.JFrame {
         txtareatotal = new javax.swing.JTextArea();
         jLabel17 = new javax.swing.JLabel();
         spnQtybuy = new javax.swing.JSpinner();
-        btnPDF = new javax.swing.JButton();
         btnPrint = new javax.swing.JButton();
         spnPay = new javax.swing.JSpinner();
         txtDisc = new javax.swing.JTextField();
@@ -193,6 +195,7 @@ public class CreateOrder extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Create Order");
+        setResizable(false);
 
         jPanel1.setBackground(new java.awt.Color(153, 153, 153));
 
@@ -267,6 +270,7 @@ public class CreateOrder extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
+        tblOrder.setEnabled(false);
         tblOrder.addComponentListener(new java.awt.event.ComponentAdapter() {
             public void componentResized(java.awt.event.ComponentEvent evt) {
                 tblOrderComponentResized(evt);
@@ -304,6 +308,7 @@ public class CreateOrder extends javax.swing.JFrame {
 
         jLabel7.setText("Qty-in-hand:");
 
+        txtQtyhand.setText("0");
         txtQtyhand.setEnabled(false);
 
         jLabel8.setText("Qty-to-buy: ");
@@ -387,13 +392,6 @@ public class CreateOrder extends javax.swing.JFrame {
 
         spnQtybuy.setModel(new javax.swing.SpinnerNumberModel(0, 0, null, 1));
 
-        btnPDF.setText("Generate PDF");
-        btnPDF.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnPDFActionPerformed(evt);
-            }
-        });
-
         btnPrint.setText("Print");
         btnPrint.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -449,20 +447,24 @@ public class CreateOrder extends javax.swing.JFrame {
                                                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                                     .addComponent(btnClear))))))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                     .addGroup(jPanel2Layout.createSequentialGroup()
                                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                             .addComponent(jLabel8)
                                             .addComponent(jLabel16)
                                             .addComponent(jLabel6))
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                            .addComponent(spnQtybuy, javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(txtDisc)
-                                            .addComponent(txtType, javax.swing.GroupLayout.Alignment.LEADING))
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(jLabel3)
-                                        .addGap(161, 161, 161))
+                                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                                .addComponent(txtType, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addGap(0, 0, Short.MAX_VALUE))
+                                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                                    .addComponent(txtDisc)
+                                                    .addComponent(spnQtybuy, javax.swing.GroupLayout.DEFAULT_SIZE, 53, Short.MAX_VALUE))
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                .addComponent(jLabel3)
+                                                .addGap(270, 270, 270))))
                                     .addGroup(jPanel2Layout.createSequentialGroup()
                                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                             .addComponent(btnCal)
@@ -477,36 +479,39 @@ public class CreateOrder extends javax.swing.JFrame {
                                 .addComponent(jScrollPane1)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(btnBack, javax.swing.GroupLayout.Alignment.TRAILING)
                                     .addGroup(jPanel2Layout.createSequentialGroup()
-                                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                                .addGroup(jPanel2Layout.createSequentialGroup()
-                                                    .addComponent(jLabel12)
-                                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                                    .addComponent(spnPay, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                                                    .addComponent(jLabel5)
-                                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 22, Short.MAX_VALUE)
-                                                    .addComponent(txtTotalPrice, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                                                    .addComponent(jLabel13)
-                                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                                    .addComponent(txtChange, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                                                    .addComponent(jLabel4)
-                                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                                    .addComponent(txtTotalItems, javax.swing.GroupLayout.DEFAULT_SIZE, 89, Short.MAX_VALUE)))
-                                            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                .addComponent(btnProceed)
-                                                .addComponent(btnPDF)))
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(btnClearRow)
-                                            .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(jLabel17)
-                                            .addComponent(btnPrint))
-                                        .addGap(33, 33, 33))
-                                    .addComponent(btnBack, javax.swing.GroupLayout.Alignment.TRAILING))))
+                                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                                    .addGroup(jPanel2Layout.createSequentialGroup()
+                                                        .addComponent(jLabel12)
+                                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                        .addComponent(spnPay, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                                                        .addComponent(jLabel5)
+                                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 22, Short.MAX_VALUE)
+                                                        .addComponent(txtTotalPrice, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                                                        .addComponent(jLabel13)
+                                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                        .addComponent(txtChange, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                                    .addGroup(jPanel2Layout.createSequentialGroup()
+                                                        .addComponent(jLabel4)
+                                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                                        .addComponent(txtTotalItems)))
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                    .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                    .addComponent(jLabel17)))
+                                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                                .addGap(37, 37, 37)
+                                                .addComponent(btnProceed)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                                .addComponent(btnClearRow)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                                .addComponent(btnPrint)))
+                                        .addGap(33, 33, 33)))))
                         .addContainerGap())))
         );
         jPanel2Layout.setVerticalGroup(
@@ -526,11 +531,12 @@ public class CreateOrder extends javax.swing.JFrame {
                                 .addComponent(txtSearch, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addComponent(jLabel2)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel15)
-                            .addComponent(txtItemNo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel16)
-                            .addComponent(txtType, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(jLabel15)
+                                .addComponent(txtItemNo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jLabel16))
+                            .addComponent(txtType, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel2Layout.createSequentialGroup()
                                 .addGap(8, 8, 8)
@@ -590,12 +596,9 @@ public class CreateOrder extends javax.swing.JFrame {
                         .addGap(27, 27, 27)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(btnClearRow)
-                            .addComponent(btnProceed))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(btnPDF)
+                            .addComponent(btnProceed)
                             .addComponent(btnPrint))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 14, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 52, Short.MAX_VALUE)
                         .addComponent(btnBack)))
                 .addContainerGap())
         );
@@ -637,7 +640,7 @@ public class CreateOrder extends javax.swing.JFrame {
                         .addComponent(lblTime)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(lblPM, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(0, 57, Short.MAX_VALUE))
+                .addGap(0, 36, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -659,7 +662,7 @@ public class CreateOrder extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -747,6 +750,7 @@ public class CreateOrder extends javax.swing.JFrame {
 
 ArrayList<Float> ll = new ArrayList<Float>();
     private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
+        try{
         String itemno = txtItemNo.getText();
         String type = txtType.getText();
         String itemname = txtItemName.getText();
@@ -757,13 +761,12 @@ ArrayList<Float> ll = new ArrayList<Float>();
         int disc = Integer.parseInt(txtDisc.getText());
         int qty2buy = Integer.parseInt(spnQtybuy.getValue().toString());
         float total = price*qty2buy;
-        boolean match = String.valueOf(disc).matches("[a-zA-Z]+");
+        
         if (qty2buy == 0){
             JOptionPane.showMessageDialog(this, "Please Input a Quantity !");
         }
-        else if(match == true || disc >= 91){
+        else if(Pattern.matches("[a-zA-Z]+",String.valueOf(disc))==true || String.valueOf(disc).trim().equalsIgnoreCase("")|| disc >= 91){
             JOptionPane.showMessageDialog(this, "Invalid discount !");
-            //clear();
         }
         else if(itemno.trim().equals("") || itemno.equals("0")){
             JOptionPane.showMessageDialog(this, "Please select a product from the stocks table !");
@@ -827,6 +830,7 @@ ArrayList<Float> ll = new ArrayList<Float>();
             
             }
             fillTable();
+            clear();
             }
                 
             }
@@ -834,6 +838,9 @@ ArrayList<Float> ll = new ArrayList<Float>();
             }catch (SQLException ex) {
             Logger.getLogger(CreateOrder.class.getName()).log(Level.SEVERE, null, ex);
         }
+        }
+        }catch(NumberFormatException e){
+            JOptionPane.showMessageDialog(null, "Invalid discount !");
         }
         
     }//GEN-LAST:event_btnAddActionPerformed
@@ -866,6 +873,7 @@ void checker(){
     }//GEN-LAST:event_btnClearActionPerformed
 
     private void btnClearRowActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnClearRowActionPerformed
+        try{
         tblOrder.scrollRectToVisible(tblOrder.getCellRect(tblOrder.getRowCount()-1, 0, true));
         DefaultTableModel model = (DefaultTableModel) tblOrder.getModel();
         int lastRow = tblOrder.convertRowIndexToView(model.getRowCount() - 1);
@@ -887,8 +895,8 @@ void checker(){
         String formatedString = ll.toString()
         .replace(" ", "")
         .replace(",", "\n")
-        .replace("[", "")  //remove the right bracket
-        .replace("]", "")  //remove the left bracket
+        .replace("[", "")
+        .replace("]", "")
         .trim(); 
         float diff = 0;
         for(int i =0; i< ll.size(); i++){
@@ -907,15 +915,19 @@ void checker(){
             //s.executeUpdate("Update Stocks set Quantity="+totalqty+" where ItemNo= "+itemno+"");
             }
         } catch (SQLException ex) {
-            Logger.getLogger(CreateOrder.class.getName()).log(Level.SEVERE, null, ex);
+            //Logger.getLogger(CreateOrder.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(null, "Please select atleast one order !");
         }
-        }
+        
         if(ll.size() == 0){
             System.out.println("Array Empty");
             txtTotalPrice.setText("0.0");
             txtChange.setText("0.0");
         }
-        
+        }
+        }catch (IllegalArgumentException e){
+        JOptionPane.showMessageDialog(null, "Please select atleast one order !");        
+        }
     }//GEN-LAST:event_btnClearRowActionPerformed
 
     private void btnProceedActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnProceedActionPerformed
@@ -925,6 +937,7 @@ void checker(){
         if(pay>=total){
         total = pay - total;
         txtChange.setText(String.valueOf(total));
+        genpdf();
         }
         if(pay == 0 && String.valueOf(total).equals("0.0")){
             JOptionPane.showMessageDialog(null, "Please input atleast one order!");
@@ -940,10 +953,10 @@ void checker(){
     private void btnGoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGoActionPerformed
         String search = txtSearch.getText();
         if(search.trim().equalsIgnoreCase("")){
-            JOptionPane.showMessageDialog(null, "Input a valid ItemNo!");
+            JOptionPane.showMessageDialog(null, "Input a valid Item No!");
         }
-        if(Pattern.matches("[a-zA-Z]+",search)==true && search.length() >= 1){
-            JOptionPane.showMessageDialog(null, "Input a valid ItemNo!");
+        else if(Pattern.matches("[a-zA-Z]+",search)==true && search.length() >= 1){
+            JOptionPane.showMessageDialog(null, "Input a valid Item No!");
         }
         else{
             try {
@@ -959,13 +972,13 @@ void checker(){
             int colcount = md.getColumnCount();
             Object[] data = new Object[colcount];
             while(rs.next()){
-                for(int i=1;i<=colcount;i++){
+                    for(int i=1;i<=colcount;i++){
                     data[i-1] = rs.getString(i);
                 }
-                tblModel.addRow(data);
+                tblModel.addRow(data); 
             }
         } catch (SQLException ex) {
-            System.out.println("Error"+ex);
+            JOptionPane.showMessageDialog(null, "Input a valid Item No!");
         }
         }
     }//GEN-LAST:event_btnGoActionPerformed
@@ -981,13 +994,41 @@ void checker(){
     }//GEN-LAST:event_btnBackActionPerformed
 
     private void tblOrderComponentResized(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_tblOrderComponentResized
-        
 
     }//GEN-LAST:event_tblOrderComponentResized
     ArrayList<Integer> listColWidths = new ArrayList<Integer>();
-    private void btnPDFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPDFActionPerformed
+    private void btnPrintActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPrintActionPerformed
+        MessageFormat header = new MessageFormat("Report Print");
+        MessageFormat footer = new MessageFormat("Page{0,number,integer}");
+        if(txtTotalItems.getText().equals("0")){
+            JOptionPane.showMessageDialog(null, "Please select atleast one order !");
+        }else{
+        try{
+            tblOrder.print(JTable.PrintMode.FIT_WIDTH, header, footer);
+        }catch(java.awt.print.PrinterException e){
+            System.err.format("Cannot print %s%n", e.getMessage());
+        }
+        }
+    }//GEN-LAST:event_btnPrintActionPerformed
+    void print(){
+        MessageFormat header = new MessageFormat("Report Print");
+        MessageFormat footer = new MessageFormat("Page{0,number,integer}");
+        if(txtTotalItems.getText().equals("0")){
+            JOptionPane.showMessageDialog(null, "Please select atleast one order !");
+        }else{
+        try{
+            tblOrder.print(JTable.PrintMode.FIT_WIDTH, header, footer);
+        }catch(java.awt.print.PrinterException e){
+            System.err.format("Cannot print %s%n", e.getMessage());
+        }
+        }
+    }
+    void genpdf(){
+        float totalp = Float.parseFloat(txtTotalPrice.getText());
+        float pay = Float.parseFloat(spnPay.getValue().toString());
+        float change = Float.parseFloat(txtChange.getText());
         Document document = new Document();
-        DefaultTableModel dtm = (DefaultTableModel) tblOrder.getModel();
+        TableModel dtm = (TableModel) tblOrder.getModel();
         int nRow = dtm.getRowCount(), nCol = dtm.getColumnCount();
         String totalorders = txtTotalItems.getText();
         if(totalorders.equals("0")){
@@ -1007,7 +1048,7 @@ void checker(){
         for (int y = 0 ; y < nCol ; y++)
             tableData[x][y] = dtm.getValueAt(x,y);
         
-        
+        tblOrder.setModel(dtm);
         tblOrder = new JTable(tableData, columnname);
         tblOrder.setPreferredScrollableViewportSize(new Dimension(500, 70));
         tblOrder.setFillsViewportHeight(true);
@@ -1026,14 +1067,16 @@ void checker(){
             {
                 tableWidths[i] = listColWidths.get(i);
             }
-            pdfTable.setWidths(tableWidths);
+            //set column widths
+            float[] columnWidths = new float[] {70f, 50f, 65f, 70f, 50f, 70f, 80f, 70f, 50f};
+            pdfTable.setWidths(columnWidths);
             PdfPCell cell = new PdfPCell();
             Phrase phrase = null;
             cell.setBackgroundColor(Color.LIGHT_GRAY);
             cell.setBorderWidthLeft(1);
             for(int i=0;i<tblOrder.getColumnCount();i++)
             {
-                phrase = new Phrase(columnname[i]); 
+                phrase = new Phrase(columnname[i]);
                 cell = new PdfPCell(phrase);
                 pdfTable.addCell(cell);
             }
@@ -1044,36 +1087,46 @@ void checker(){
                     phrase = new Phrase(String.valueOf(tableData[i][j]));
                     cell = new PdfPCell(phrase);
                     pdfTable.addCell(cell);
+                    cell.setColspan(7);
                 }
             }
             document.add(new Paragraph("                                 INVOICE",FontFactory.getFont(FontFactory.TIMES_ROMAN, 25, Font.NORMAL,Color.BLACK)));
             document.add(new Paragraph("                                                                   "));
-            document.add(new Paragraph("                                                                   "+new Date().toString(),FontFactory.getFont(FontFactory.TIMES_ROMAN, 11, Font.NORMAL,Color.BLACK)));
+            document.add(new Paragraph("                                                "+new Date().toString(),FontFactory.getFont(FontFactory.TIMES_ROMAN, 14, Font.NORMAL,Color.BLACK)));
             document.add(new Paragraph("                                                                   "));
             document.add(pdfTable);
+            document.add(new Paragraph("                                                                   "));
+            document.add(new Paragraph("                                                                                                 Total="+totalp+"php",FontFactory.getFont(FontFactory.TIMES_ROMAN, 15, Font.BOLD,Color.BLACK)));
+            document.add(new Paragraph("                                                                                                 Payment="+pay+"php",FontFactory.getFont(FontFactory.TIMES_ROMAN, 15, Font.BOLD,Color.BLACK)));
+            document.add(new Paragraph("                                                                                                 Change="+change+"php",FontFactory.getFont(FontFactory.TIMES_ROMAN, 15, Font.BOLD,Color.BLACK)));
+            document.add(new Paragraph("                                                                   "));
+            document.add(new Paragraph("                                               Goods once sold, has only 1 week replacement",FontFactory.getFont(FontFactory.TIMES_ROMAN, 12, Font.NORMAL,Color.BLACK)));
+            document.add(new Paragraph("               ---------------------------------------------------------------------",FontFactory.getFont(FontFactory.TIMES_ROMAN, 17, Font.NORMAL,Color.BLACK)));
+            document.add(new Paragraph("                                                              LMC Point Of Sales System",FontFactory.getFont(FontFactory.TIMES_ROMAN, 12, Font.NORMAL,Color.BLACK)));
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (DocumentException e) {
             e.printStackTrace();
         }
         document.close();
-            JOptionPane.showMessageDialog(null, "PDF generated! You can now check it inside Project folder.");
+        //to run pdf file
+        try {
+            Runtime.getRuntime().exec("rundll32 url.dll,FileProtocolHandler "+"Orders.pdf");
+        } catch (IOException ex) {
+            Logger.getLogger(CreateOrder.class.getName()).log(Level.SEVERE, null, ex);
         }
-    }//GEN-LAST:event_btnPDFActionPerformed
-
-    private void btnPrintActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPrintActionPerformed
-        MessageFormat header = new MessageFormat("Report Print");
-        MessageFormat footer = new MessageFormat("Page{0,number,integer}");
-        try{
-            tblOrder.print(JTable.PrintMode.FIT_WIDTH, header, footer);
-        }catch(java.awt.print.PrinterException e){
-            System.err.format("Cannot print %s%n", e.getMessage());
+            EmployeePanel ep = new EmployeePanel();
+            ep.setVisible(true);
+            this.hide();
+            ep.dispose();
+            CreateOrder co = new CreateOrder();
+            co.setVisible(true);
         }
-    }//GEN-LAST:event_btnPrintActionPerformed
-    
+    }
     void fillTable(){
         try {
             tblModel = (DefaultTableModel)tblStocks.getModel();
+            
             rs = s.executeQuery("Select * from  Stocks where Quantity >1");
             ResultSetMetaData md = rs.getMetaData();
             int row = tblModel.getRowCount();
@@ -1126,10 +1179,9 @@ void checker(){
         cmbFilter.setSelectedItem("All");
         txtItemName.setText("");
         txtPrice.setText("0");
-        spnPay.setValue("0");
         txtChange.setText("0");
-        txtDisc.setText("");
-        txtQtyhand.setText("");
+        txtDisc.setText("0");
+        txtQtyhand.setText("0");
         spnQtybuy.setValue(0);
         
     }
@@ -1172,7 +1224,6 @@ void checker(){
     private javax.swing.JButton btnClear;
     private javax.swing.JButton btnClearRow;
     private javax.swing.JButton btnGo;
-    private javax.swing.JButton btnPDF;
     private javax.swing.JButton btnPrint;
     private javax.swing.JButton btnProceed;
     private javax.swing.JButton btnView;
