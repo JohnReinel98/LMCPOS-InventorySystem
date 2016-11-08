@@ -193,11 +193,11 @@ public class SalesReport extends javax.swing.JFrame {
                
                if(oldVal == null)
                 {
-                    m.put(date,Float.parseFloat(sprice)+Float.parseFloat(bprice));
+                    m.put(date,Float.parseFloat(sprice)-Float.parseFloat(bprice));
                 }
                 else
                 {
-                    m.put(date,oldVal+Float.parseFloat(sprice)+Float.parseFloat(bprice));
+                    m.put(date,oldVal+Float.parseFloat(sprice)-Float.parseFloat(bprice));
                 }
                
                
