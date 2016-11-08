@@ -45,6 +45,7 @@ import java.awt.print.*;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.util.Date;
+import java.util.Vector;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 import javax.swing.table.TableColumn;
@@ -64,17 +65,14 @@ public class CreateOrder extends javax.swing.JFrame {
             public void run(){
                 try {
                     while(true){
-                    Calendar cal = new GregorianCalendar();
-                    int day=cal.get(Calendar.DAY_OF_MONTH);
-                    int month=cal.get(Calendar.MONTH);
-                    int year=cal.get(Calendar.YEAR);
-        
+                    Calendar cal = Calendar.getInstance();
+                    SimpleDateFormat ft = new SimpleDateFormat ("yyyy-MM-dd");
                     int second=cal.get(Calendar.SECOND);
                     int minute=cal.get(Calendar.MINUTE);
                     int hour=cal.get(Calendar.HOUR);
                     SimpleDateFormat sdf = new SimpleDateFormat("a");
                     lblPM.setText(sdf.format(cal.getTime()));
-                    lblDate.setText(""+month+"/"+day+"/"+year+"");
+                    lblDate.setText(ft.format(cal.getTime()));
                     lblTime.setText(""+hour+":"+minute+":"+second+"");
                     sleep(1000);
                     }
@@ -168,19 +166,16 @@ public class CreateOrder extends javax.swing.JFrame {
         btnGo = new javax.swing.JButton();
         btnView = new javax.swing.JButton();
         btnBack = new javax.swing.JButton();
-        jScrollPane4 = new javax.swing.JScrollPane();
-        txtareatotal = new javax.swing.JTextArea();
-        jLabel17 = new javax.swing.JLabel();
         spnQtybuy = new javax.swing.JSpinner();
         btnPrint = new javax.swing.JButton();
         spnPay = new javax.swing.JSpinner();
         txtDisc = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
-        txtReturn = new javax.swing.JTextField();
         jLabel20 = new javax.swing.JLabel();
         jLabel21 = new javax.swing.JLabel();
-        txtProdID = new javax.swing.JTextField();
         spnReturn = new javax.swing.JSpinner();
+        txtRetItemName = new javax.swing.JTextField();
+        btnCancel = new javax.swing.JButton();
         lblPM = new javax.swing.JLabel();
         lblDate = new javax.swing.JLabel();
         lblTime = new javax.swing.JLabel();
@@ -268,7 +263,7 @@ public class CreateOrder extends javax.swing.JFrame {
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Float.class
+                java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Integer.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Float.class
             };
             boolean[] canEdit = new boolean [] {
                 false, false, false, false, false, false, false, false, false
@@ -354,6 +349,7 @@ public class CreateOrder extends javax.swing.JFrame {
         txtChange.setEnabled(false);
 
         btnClearRow.setText("Return");
+        btnClearRow.setEnabled(false);
         btnClearRow.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnClearRowActionPerformed(evt);
@@ -400,13 +396,6 @@ public class CreateOrder extends javax.swing.JFrame {
             }
         });
 
-        txtareatotal.setEditable(false);
-        txtareatotal.setColumns(20);
-        txtareatotal.setRows(5);
-        jScrollPane4.setViewportView(txtareatotal);
-
-        jLabel17.setText("Prices:");
-
         spnQtybuy.setModel(new javax.swing.SpinnerNumberModel(0, 0, null, 1));
 
         btnPrint.setText("Print");
@@ -422,15 +411,17 @@ public class CreateOrder extends javax.swing.JFrame {
 
         jLabel3.setText("%");
 
-        txtReturn.setText("0");
+        jLabel20.setText("Return Quantity:");
 
-        jLabel20.setText("Return:");
-
-        jLabel21.setText("Product ID: ");
-
-        txtProdID.setEnabled(false);
+        jLabel21.setText("Item Name:");
 
         spnReturn.setModel(new javax.swing.SpinnerNumberModel(0, 0, null, 1));
+        spnReturn.setEnabled(false);
+
+        txtRetItemName.setEnabled(false);
+
+        btnCancel.setText("Cancel");
+        btnCancel.setEnabled(false);
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -496,50 +487,48 @@ public class CreateOrder extends javax.swing.JFrame {
                                         .addComponent(btnGo)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                         .addComponent(btnView))
-                                    .addGroup(jPanel2Layout.createSequentialGroup()
-                                        .addComponent(btnCal)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(txtReturn, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                    .addComponent(btnCal)))
                             .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addComponent(jScrollPane1)
+                                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 780, Short.MAX_VALUE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel5)
+                                    .addComponent(jLabel4)
+                                    .addComponent(jLabel21)
+                                    .addComponent(jLabel20)
+                                    .addComponent(jLabel12)
+                                    .addComponent(jLabel13))
+                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(jPanel2Layout.createSequentialGroup()
+                                        .addGap(5, 5, 5)
                                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                            .addGroup(jPanel2Layout.createSequentialGroup()
-                                                .addComponent(jLabel12)
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 39, Short.MAX_VALUE)
-                                                .addComponent(spnPay, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                            .addGroup(jPanel2Layout.createSequentialGroup()
-                                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                    .addComponent(jLabel5)
-                                                    .addComponent(jLabel4)
-                                                    .addComponent(jLabel21)
-                                                    .addComponent(jLabel20))
-                                                .addGap(18, 18, 18)
-                                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                                    .addComponent(txtProdID)
-                                                    .addComponent(txtTotalPrice, javax.swing.GroupLayout.DEFAULT_SIZE, 89, Short.MAX_VALUE)
-                                                    .addComponent(txtTotalItems)
-                                                    .addComponent(spnReturn)))
-                                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                                                .addComponent(jLabel13)
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                    .addComponent(btnPrint)
-                                                    .addComponent(txtChange, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                            .addComponent(txtRetItemName, javax.swing.GroupLayout.DEFAULT_SIZE, 91, Short.MAX_VALUE)
+                                            .addComponent(txtTotalPrice)
+                                            .addComponent(txtTotalItems)))
+                                    .addGroup(jPanel2Layout.createSequentialGroup()
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(jLabel17)
-                                            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                                .addComponent(btnClearRow, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                                .addComponent(btnProceed, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                                        .addGap(33, 33, 33))
-                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                                        .addGap(103, 103, 103)
-                                        .addComponent(btnBack)))))
+                                            .addComponent(spnReturn, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel2Layout.createSequentialGroup()
+                                                        .addComponent(txtChange, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                        .addComponent(btnPrint, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel2Layout.createSequentialGroup()
+                                                        .addComponent(spnPay, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                        .addComponent(btnProceed)))
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                                    .addComponent(btnClearRow, javax.swing.GroupLayout.DEFAULT_SIZE, 84, Short.MAX_VALUE)
+                                                    .addComponent(btnCancel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))))
+                                .addGap(14, 14, 14)))
                         .addContainerGap())))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(btnBack)
+                .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -593,52 +582,44 @@ public class CreateOrder extends javax.swing.JFrame {
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(btnAdd)
                             .addComponent(btnClear)
-                            .addComponent(btnCal)
-                            .addComponent(txtReturn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(btnCal))
                         .addGap(4, 4, 4)
                         .addComponent(jLabel11)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 254, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 254, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(84, Short.MAX_VALUE))
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 54, Short.MAX_VALUE)
-                        .addComponent(jLabel17)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(0, 0, Short.MAX_VALUE))
-                            .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(jLabel4)
-                                    .addComponent(txtTotalItems, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(txtTotalPrice, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jLabel5))
-                                .addGap(18, 18, 18)
-                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(jLabel21)
-                                    .addComponent(txtProdID, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 10, Short.MAX_VALUE)
-                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(jLabel20)
-                                    .addComponent(spnReturn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(25, 25, 25)
-                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(btnProceed)
-                                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                        .addComponent(jLabel12)
-                                        .addComponent(spnPay, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel4)
+                            .addComponent(txtTotalItems, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel5)
+                            .addComponent(txtTotalPrice, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel21)
+                            .addComponent(txtRetItemName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel20)
+                            .addComponent(spnReturn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(39, 39, 39)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(spnPay, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel12)
+                            .addComponent(btnProceed)
+                            .addComponent(btnClearRow))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel13)
                             .addComponent(txtChange, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btnClearRow))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnPrint)
-                        .addGap(4, 4, 4)
-                        .addComponent(btnBack)))
-                .addContainerGap())
+                            .addComponent(btnPrint)
+                            .addComponent(btnCancel))
+                        .addGap(53, 53, 53)
+                        .addComponent(btnBack)
+                        .addContainerGap())))
         );
 
         lblPM.setFont(new java.awt.Font("Comic Sans MS", 1, 12)); // NOI18N
@@ -693,7 +674,7 @@ public class CreateOrder extends javax.swing.JFrame {
                     .addComponent(jLabel19, javax.swing.GroupLayout.Alignment.TRAILING))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(29, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -785,8 +766,6 @@ public class CreateOrder extends javax.swing.JFrame {
             fillTable();
         }
     }//GEN-LAST:event_cmbFilterItemStateChanged
-ArrayList<Integer> ii = new ArrayList<Integer>();
-ArrayList<String> oo = new ArrayList<String>();
 ArrayList<Float> ll = new ArrayList<Float>();
     private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
         try{
@@ -846,12 +825,9 @@ ArrayList<Float> ll = new ArrayList<Float>();
             if(!exists){
             int totalqty = qty1 - qty2buy;
             s.executeUpdate("Update Stocks set Quantity="+totalqty+" where ItemNo= "+itemno+"");
-            ii.add(qty2buy);
-            oo.add(itemno);
             float b = (total * disc)/100;
             
             total = total - b;
-            txtareatotal.setText("");
             String totaldisc = disc + "%";
             Object[] row = { itemno, type, itemname, qty2buy, price, totaldisc, date,time, total  };
             DefaultTableModel model = (DefaultTableModel) tblOrder.getModel();
@@ -862,7 +838,6 @@ ArrayList<Float> ll = new ArrayList<Float>();
             
             float sum = 0;
             for(int i =0; i< ll.size(); i++){
-                txtareatotal.append(ll.get(i)+"\n");
                 sum += ll.get(i);
                 txtTotalPrice.setText(String.valueOf(sum));
             }
@@ -897,16 +872,13 @@ ArrayList<Float> ll = new ArrayList<Float>();
         DefaultTableModel dtmodel = (DefaultTableModel) tblOrder.getModel();
         int select = tblOrder.getSelectedRow();
         int numRows = tblOrder.getSelectedRows().length;
-        try{
-        int zero = 0;
-        String itemno = txtProdID.getText();
+        String itemname = txtRetItemName.getText();
         float totalprice = Float.parseFloat(txtTotalPrice.getText());
         float unitprice = Float.parseFloat(tblOrder.getValueAt(select, 4).toString());
         int qty = Integer.parseInt(tblOrder.getValueAt(select, 3).toString());
         int return1 = Integer.parseInt(spnReturn.getValue().toString());
         
-        
-        int lastRow = tblOrder.convertRowIndexToView(dtmodel.getRowCount() - 1);
+        try{
         
         if(txtTotalItems.getText().equals("0")){
             JOptionPane.showMessageDialog(null, "Please select atleast one order !");
@@ -920,75 +892,67 @@ ArrayList<Float> ll = new ArrayList<Float>();
         else if(return1 > qty){
             JOptionPane.showMessageDialog(null, "Requested return is higher than your order quantity !");
         }
-        else if(itemno.trim().equalsIgnoreCase("")){
+        else if(itemname.equalsIgnoreCase("")){
             JOptionPane.showMessageDialog(null, "Please select atleast one order in the order table !");
         }
         else{
-         
-            int count = tblOrder.getRowCount(); 
-        txtTotalItems.setText(String.valueOf(count));
-        
-        //ll.remove(ll.size() -1);
-//        String formatedString = ll.toString()
-//        .replace(" ", "")
-//        .replace(",", "\n")
-//        .replace("[", "")
-//        .replace("]", "")
-//        .trim(); 
-//        float diff = 0;
-//        for(int i =0; i< ll.size(); i++){
-//            diff -= ll.get(i);
-//            txtTotalPrice.setText(String.valueOf(diff).replace("-", ""));
-//        }
-//        txtareatotal.setText(formatedString);
+
         try {
             
-            String sql = "Select Quantity from Stocks where ItemNo = '"+itemno+"'";
+            String sql = "Select Quantity,Price from Stocks where ItemName = '"+itemname+"'";
             rs=s.executeQuery(sql);
             if(rs.next()){
             int qty1 = rs.getInt("Quantity");
-            int totalAmount=0;
+            float price = rs.getFloat("Price");
+            float selectedrow = Float.parseFloat(tblOrder.getValueAt(select, 8).toString());
+            float totalAmount=0;
                 totalAmount = qty1 + return1;
                 float returnprice =totalprice - unitprice*return1;
                 txtTotalPrice.setText(String.valueOf(returnprice));
-                tblOrder.setValueAt(returnprice, select, 8);
-                s.executeUpdate("Update Stocks set Quantity="+totalAmount+" where ItemNo= '"+itemno+"'");
+                float totalpriceret = selectedrow - price*return1;
+                tblOrder.setValueAt(totalpriceret, select, 8);
+                s.executeUpdate("Update Stocks set Quantity="+totalAmount+" where ItemName= '"+itemname+"'");
             }
+            spnReturn.setEnabled(false);
+            btnClearRow.setEnabled(false);
             fillTable();
-            txtProdID.setText("");
+            txtRetItemName.setText("");
             spnReturn.setValue(0);
             int tableret = qty - return1;
             tblOrder.setValueAt(tableret, select, 3);
-            
+            if(tableret == 0){
+                for (int i = 0; i < numRows; i++) {
+                    if (((String)tblOrder.getValueAt(i, 2)).equals(itemname)) {
+                    dtmodel.removeRow(i);
+                    break;
+                    }
+                }
+            }
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, "Please select atleast one order !");
         }
+        int count = tblOrder.getRowCount(); 
+        txtTotalItems.setText(String.valueOf(count));
         if(ll.size() == 0){
             System.out.println("Array Empty");
             txtTotalPrice.setText("0.0");
             txtChange.setText("0.0");
         }
-            
         }
         }catch(ArrayIndexOutOfBoundsException ext){
-        JOptionPane.showMessageDialog(null, "(Array)Please select atleast one order !");        
+        JOptionPane.showMessageDialog(null, "Cart Empty !");
         }
         catch(IllegalArgumentException e){
-        JOptionPane.showMessageDialog(null, "(Illegal)Please select atleast one order !");        
+        JOptionPane.showMessageDialog(null, "Cart Empty !");        
         }
-        if(txtTotalPrice.getText().equals("0.0")){
-            for(int i=0; i<numRows ; i++ ) {
 
-            dtmodel.removeRow(tblOrder.getSelectedRow());
-            }
-        }
-        
     }//GEN-LAST:event_btnClearRowActionPerformed
 
     private void btnProceedActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnProceedActionPerformed
         float total = Float.parseFloat(txtTotalPrice.getText());
         float pay = Float.parseFloat(spnPay.getValue().toString());
         String totalorders = txtTotalItems.getText();
+        
         if(pay<total || pay == 0){
             JOptionPane.showMessageDialog(null, "Insufficient payment !");
         }
@@ -1005,6 +969,29 @@ ArrayList<Float> ll = new ArrayList<Float>();
             total = pay - total;
             txtChange.setText(String.valueOf(total));
             genpdf();
+            
+            
+            try {
+                for(int i=0;i<=tblOrder.getRowCount();i++){
+                String id = tblOrder.getValueAt(i, 0).toString();
+                String type = tblOrder.getValueAt(i, 1).toString();
+                String itemname = tblOrder.getValueAt(i, 2).toString();
+                int qty = Integer.parseInt(tblOrder.getValueAt(i, 3).toString());
+                float unitprice = Float.parseFloat(tblOrder.getValueAt(i, 4).toString());
+                String disc = tblOrder.getValueAt(i, 5).toString();
+                String date = tblOrder.getValueAt(i, 6).toString();
+                String time = tblOrder.getValueAt(i, 7).toString();
+                float total1 = Float.parseFloat(tblOrder.getValueAt(i, 8).toString());
+                s.executeUpdate("insert into Sales(ProductID,Type,ItemName,Quantity,UnitPrice,Discount,Date,Time,Total) values('"+id+"','"+type+"','"+itemname+"',"+qty+","+unitprice+",'"+disc+"','"+date+"','"+time+"',"+total1+")");
+
+            }
+            } catch (SQLException ex) {
+                Logger.getLogger(CreateOrder.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            catch(ArrayIndexOutOfBoundsException e){
+                System.out.println("Identity operated");
+            }
+
         }
     }//GEN-LAST:event_btnProceedActionPerformed
 
@@ -1070,11 +1057,12 @@ ArrayList<Float> ll = new ArrayList<Float>();
     }//GEN-LAST:event_btnPrintActionPerformed
 
     private void tblOrderMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblOrderMouseClicked
+    spnReturn.setEnabled(true);
+    btnClearRow.setEnabled(true);
     int select = tblOrder.getSelectedRow();
-    String id = tblOrder.getValueAt(select, 0).toString();
-    int qty = Integer.parseInt(tblOrder.getValueAt(select, 3).toString());
-    txtProdID.setText(id);
-    txtReturn.setText(String.valueOf(qty));
+    String itemname = tblOrder.getValueAt(select, 2).toString();
+
+    txtRetItemName.setText(itemname);
 
     }//GEN-LAST:event_tblOrderMouseClicked
     void print(){
@@ -1288,6 +1276,7 @@ ArrayList<Float> ll = new ArrayList<Float>();
     private javax.swing.JButton btnAdd;
     private javax.swing.JButton btnBack;
     private javax.swing.JButton btnCal;
+    private javax.swing.JButton btnCancel;
     private javax.swing.JButton btnClear;
     private javax.swing.JButton btnClearRow;
     private javax.swing.JButton btnGo;
@@ -1303,7 +1292,6 @@ ArrayList<Float> ll = new ArrayList<Float>();
     private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel16;
-    private javax.swing.JLabel jLabel17;
     private javax.swing.JLabel jLabel18;
     private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel2;
@@ -1324,7 +1312,6 @@ ArrayList<Float> ll = new ArrayList<Float>();
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
-    private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JLabel lblDate;
     private javax.swing.JLabel lblPM;
@@ -1340,13 +1327,11 @@ ArrayList<Float> ll = new ArrayList<Float>();
     private javax.swing.JTextField txtItemName;
     private javax.swing.JTextField txtItemNo;
     private javax.swing.JTextField txtPrice;
-    private javax.swing.JTextField txtProdID;
     private javax.swing.JTextField txtQtyhand;
-    private javax.swing.JTextField txtReturn;
+    private javax.swing.JTextField txtRetItemName;
     private javax.swing.JTextField txtSearch;
     private javax.swing.JTextField txtTotalItems;
     private javax.swing.JTextField txtTotalPrice;
     private javax.swing.JTextField txtType;
-    private javax.swing.JTextArea txtareatotal;
     // End of variables declaration//GEN-END:variables
 }
