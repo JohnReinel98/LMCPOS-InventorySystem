@@ -13,7 +13,7 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import static lmcpointofsalessystem.ManageEmployee.s;
-import static java.lang.Thread.sleep;
+import static lmcpointofsalessystem.ManipulateStocksAdmin.s;
 
 /**
  *
@@ -68,7 +68,7 @@ public class ManageCustomersEmployee extends javax.swing.JFrame {
 
         jPanel6 = new javax.swing.JPanel();
         jPanel5 = new javax.swing.JPanel();
-        jTabbedPane1 = new javax.swing.JTabbedPane();
+        jtpCustomer = new javax.swing.JTabbedPane();
         jPanel1 = new javax.swing.JPanel();
         btnAdd = new javax.swing.JButton();
         txtaLname = new javax.swing.JTextField();
@@ -103,7 +103,11 @@ public class ManageCustomersEmployee extends javax.swing.JFrame {
         btnrefresh1 = new javax.swing.JButton();
         btnBack = new javax.swing.JButton();
         btnClear = new javax.swing.JButton();
-        btnPDF = new javax.swing.JButton();
+        jButton1 = new javax.swing.JButton();
+        txtsearch = new javax.swing.JTextField();
+        jLabel12 = new javax.swing.JLabel();
+        btnGo = new javax.swing.JButton();
+        btnViewall = new javax.swing.JButton();
         lblAM = new javax.swing.JLabel();
         lblTime = new javax.swing.JLabel();
 
@@ -114,7 +118,9 @@ public class ManageCustomersEmployee extends javax.swing.JFrame {
 
         jPanel5.setBackground(new java.awt.Color(0, 255, 153));
 
+        btnAdd.setIcon(new javax.swing.ImageIcon(getClass().getResource("/lmcpointofsalessystem/Assets/Small Icons/ic_add.png"))); // NOI18N
         btnAdd.setText("Add");
+        btnAdd.setToolTipText("Add one Customer");
         btnAdd.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnAddActionPerformed(evt);
@@ -200,11 +206,11 @@ public class ManageCustomersEmployee extends javax.swing.JFrame {
                     .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(txtaContact, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(30, 30, 30)
-                .addComponent(btnAdd)
-                .addContainerGap(145, Short.MAX_VALUE))
+                .addComponent(btnAdd, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(172, Short.MAX_VALUE))
         );
 
-        jTabbedPane1.addTab("Add Customer", jPanel1);
+        jtpCustomer.addTab("Add Customer", jPanel1);
 
         txtuLname.setEnabled(false);
 
@@ -218,7 +224,9 @@ public class ManageCustomersEmployee extends javax.swing.JFrame {
 
         jLabel7.setText("Contact No.:");
 
-        btnUpdate.setText("Update");
+        btnUpdate.setIcon(new javax.swing.ImageIcon(getClass().getResource("/lmcpointofsalessystem/Assets/Small Icons/ic_edit.png"))); // NOI18N
+        btnUpdate.setText("Save");
+        btnUpdate.setToolTipText("Update one Customer");
         btnUpdate.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnUpdateActionPerformed(evt);
@@ -292,8 +300,8 @@ public class ManageCustomersEmployee extends javax.swing.JFrame {
                     .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(txtuContact, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(29, 29, 29)
-                .addComponent(btnUpdate)
-                .addContainerGap(137, Short.MAX_VALUE))
+                .addComponent(btnUpdate, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(165, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
@@ -313,11 +321,15 @@ public class ManageCustomersEmployee extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
-        jTabbedPane1.addTab("Update Customer", jPanel3);
+        jtpCustomer.addTab("Update Customer", jPanel3);
+
+        txtdCustID.setEnabled(false);
 
         jLabel5.setText("Customer ID: ");
 
-        btnDelete.setText("Delete Customer");
+        btnDelete.setIcon(new javax.swing.ImageIcon(getClass().getResource("/lmcpointofsalessystem/Assets/Small Icons/ic_delete.png"))); // NOI18N
+        btnDelete.setText("Delete");
+        btnDelete.setToolTipText("Delete one Customer");
         btnDelete.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnDeleteActionPerformed(evt);
@@ -345,12 +357,12 @@ public class ManageCustomersEmployee extends javax.swing.JFrame {
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(txtdCustID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(33, 33, 33)
-                .addComponent(btnDelete)
-                .addContainerGap(304, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addComponent(btnDelete, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(347, Short.MAX_VALUE))
         );
 
-        jTabbedPane1.addTab("Delete Customer", jPanel2);
+        jtpCustomer.addTab("Delete Customer", jPanel2);
 
         tblCustomer.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -385,31 +397,57 @@ public class ManageCustomersEmployee extends javax.swing.JFrame {
             tblCustomer.getColumnModel().getColumn(4).setResizable(false);
         }
 
+        btnrefresh1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/lmcpointofsalessystem/Assets/Small Icons/ic_refresh.png"))); // NOI18N
         btnrefresh1.setText("Refresh");
+        btnrefresh1.setToolTipText("Refreshes Table");
         btnrefresh1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnrefresh1ActionPerformed(evt);
             }
         });
 
+        btnBack.setIcon(new javax.swing.ImageIcon(getClass().getResource("/lmcpointofsalessystem/Assets/Small Icons/ic_back.png"))); // NOI18N
         btnBack.setText("Back");
+        btnBack.setToolTipText("Back to Admin panel");
         btnBack.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnBackActionPerformed(evt);
             }
         });
 
+        btnClear.setIcon(new javax.swing.ImageIcon(getClass().getResource("/lmcpointofsalessystem/Assets/Small Icons/ic_clear.png"))); // NOI18N
         btnClear.setText("Clear");
+        btnClear.setToolTipText("Clear the fields");
         btnClear.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnClearActionPerformed(evt);
             }
         });
 
-        btnPDF.setText("Generate PDF");
-        btnPDF.addActionListener(new java.awt.event.ActionListener() {
+        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/lmcpointofsalessystem/Assets/Small Icons/ic_pdf.png"))); // NOI18N
+        jButton1.setText("Generate PDF");
+        jButton1.setToolTipText("Generates PDF of Customers");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnPDFActionPerformed(evt);
+                jButton1ActionPerformed(evt);
+            }
+        });
+
+        jLabel12.setText("Search:");
+
+        btnGo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/lmcpointofsalessystem/Assets/Small Icons/ic_view.png"))); // NOI18N
+        btnGo.setText("Search");
+        btnGo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnGoActionPerformed(evt);
+            }
+        });
+
+        btnViewall.setIcon(new javax.swing.ImageIcon(getClass().getResource("/lmcpointofsalessystem/Assets/Small Icons/ic_view.png"))); // NOI18N
+        btnViewall.setText("View All");
+        btnViewall.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnViewallActionPerformed(evt);
             }
         });
 
@@ -421,33 +459,58 @@ public class ManageCustomersEmployee extends javax.swing.JFrame {
                 .addGap(17, 17, 17)
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(jPanel5Layout.createSequentialGroup()
+                        .addComponent(jtpCustomer, javax.swing.GroupLayout.PREFERRED_SIZE, 381, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 624, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 20, Short.MAX_VALUE))
+                    .addGroup(jPanel5Layout.createSequentialGroup()
                         .addComponent(btnrefresh1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(btnClear, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btnClear)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(btnPDF)
-                        .addGap(678, 678, 678)
-                        .addComponent(btnBack))
-                    .addGroup(jPanel5Layout.createSequentialGroup()
-                        .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 381, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 624, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(36, Short.MAX_VALUE))
+                        .addComponent(jButton1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jLabel12)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(txtsearch, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(btnGo)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(btnViewall)
+                        .addGap(201, 201, 201)
+                        .addComponent(btnBack)))
+                .addContainerGap())
         );
         jPanel5Layout.setVerticalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel5Layout.createSequentialGroup()
                 .addGap(22, 22, 22)
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jTabbedPane1)
+                    .addComponent(jtpCustomer)
                     .addComponent(jScrollPane3))
                 .addGap(18, 18, 18)
-                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnrefresh1)
-                    .addComponent(btnClear)
-                    .addComponent(btnBack)
-                    .addComponent(btnPDF))
-                .addContainerGap(28, Short.MAX_VALUE))
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel5Layout.createSequentialGroup()
+                        .addComponent(btnrefresh1, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap())
+                    .addGroup(jPanel5Layout.createSequentialGroup()
+                        .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(btnClear, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
+                                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(txtsearch, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel12)
+                                    .addComponent(btnGo, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(btnViewall, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(20, 20, 20))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
+                                .addComponent(btnBack, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addContainerGap())))))
         );
 
         lblAM.setFont(new java.awt.Font("Comic Sans MS", 1, 12)); // NOI18N
@@ -469,7 +532,7 @@ public class ManageCustomersEmployee extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(lblAM, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(0, 48, Short.MAX_VALUE))
+                .addGap(0, 44, Short.MAX_VALUE))
         );
         jPanel6Layout.setVerticalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -479,7 +542,7 @@ public class ManageCustomersEmployee extends javax.swing.JFrame {
                     .addComponent(lblTime))
                 .addGap(15, 15, 15)
                 .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(26, Short.MAX_VALUE))
+                .addContainerGap(29, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -636,6 +699,11 @@ public class ManageCustomersEmployee extends javax.swing.JFrame {
         try{
             int row = tblCustomer.getSelectedRow();
             String table_click = (tblCustomer.getModel().getValueAt(row, 0).toString());
+            if(jtpCustomer.getSelectedIndex()==2){
+                jtpCustomer.setSelectedIndex(2);
+            }else{
+                jtpCustomer.setSelectedIndex(1);
+            }
             String sql = "select * from Customers where CustomerID='"+table_click+"'";
             rs=s.executeQuery(sql);
              if(rs.next()){
@@ -657,13 +725,65 @@ public class ManageCustomersEmployee extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_tblCustomerMouseClicked
 
-    private void btnPDFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPDFActionPerformed
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         try {
-            PDFCustomersEmployee pdf = new PDFCustomersEmployee("Customers");
+            PDFCustomers pdf = new PDFCustomers("Customers");
         } catch (IOException ex) {
-            Logger.getLogger(ManageCustomersEmployee.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ManageCustomers.class.getName()).log(Level.SEVERE, null, ex);
         }
-    }//GEN-LAST:event_btnPDFActionPerformed
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void btnViewallActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnViewallActionPerformed
+        fillTable();
+    }//GEN-LAST:event_btnViewallActionPerformed
+
+    private void btnGoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGoActionPerformed
+        String search = txtsearch.getText();
+        String ID="";
+        if(search.trim().equals("")){
+            JOptionPane.showMessageDialog(null, "Input a valid Employee ID!");
+            txtsearch.setText("");
+        }
+        if(Pattern.matches("[a-zA-Z]+",search)==true && search.length() >= 1){
+            JOptionPane.showMessageDialog(null, "Input a valid Employee ID!");
+            txtsearch.setText("");
+        }
+        else{
+            try {
+                String sql = "select * from Customers where CustomerID='"+search+"'";
+                rs=s.executeQuery(sql);
+                txtuCustID.enable(false);
+                if(rs.next()){
+                    ID = rs.getString("CustomerID");
+                    tblModel = (DefaultTableModel)tblCustomer.getModel();
+                    rs = s.executeQuery("select * from Customers where CustomerID='"+search+"'" );
+                    ResultSetMetaData md = rs.getMetaData();
+                    int row = tblModel.getRowCount();
+                    while(row>0)
+                    {
+                        row--;
+                        tblModel.removeRow(row);
+                    }
+                    int colcount = md.getColumnCount();
+                    Object[] data = new Object[colcount];
+                    while(rs.next()){
+                    for(int i=1;i<=colcount;i++){
+                    data[i-1] = rs.getString(i);
+                    }
+                    tblModel.addRow(data);
+                    }
+                    txtsearch.setText("");
+                }
+                    else{
+                    JOptionPane.showMessageDialog(null, "ID doesn't exist");
+                    fillTable();
+                    }
+                
+            } catch (SQLException ex) {
+                Logger.getLogger(ManageEmployee.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }//GEN-LAST:event_btnGoActionPerformed
     void fillTable(){
        try {
             tblModel = (DefaultTableModel)tblCustomer.getModel();
@@ -793,12 +913,15 @@ public class ManageCustomersEmployee extends javax.swing.JFrame {
     private javax.swing.JButton btnBack;
     private javax.swing.JButton btnClear;
     private javax.swing.JButton btnDelete;
-    private javax.swing.JButton btnPDF;
+    private javax.swing.JButton btnGo;
     private javax.swing.JButton btnUpdate;
+    private javax.swing.JButton btnViewall;
     private javax.swing.JButton btnrefresh1;
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
+    private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -814,7 +937,7 @@ public class ManageCustomersEmployee extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;
     private javax.swing.JScrollPane jScrollPane3;
-    private javax.swing.JTabbedPane jTabbedPane1;
+    private javax.swing.JTabbedPane jtpCustomer;
     private javax.swing.JLabel lblAM;
     private javax.swing.JLabel lblTime;
     private javax.swing.JLabel lblaID;
@@ -824,6 +947,7 @@ public class ManageCustomersEmployee extends javax.swing.JFrame {
     private javax.swing.JTextField txtaFname;
     private javax.swing.JTextField txtaLname;
     private javax.swing.JTextField txtdCustID;
+    private javax.swing.JTextField txtsearch;
     private javax.swing.JTextField txtuAddress;
     private javax.swing.JTextField txtuContact;
     private javax.swing.JTextField txtuCustID;

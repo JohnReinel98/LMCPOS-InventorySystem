@@ -37,9 +37,9 @@ public PdfPTable getDatas(String tblName)
         PdfPTable headerTable= new PdfPTable(1);
         String newT=tblName.toString();
         try  {
-            rs = s.executeQuery("SELECT S.ItemNo,S.Type,S.ItemName,S.Quantity,Price from Stocks S" ); //alias lang ung "E", di pede naka alias ung Float data types
+            rs = s.executeQuery("SELECT S.ItemNo,S.Type,S.ItemName,S.Quantity,Price,OrigPrice from Stocks S" ); //alias lang ung "E", di pede naka alias ung Float data types
             String columnExe="";
-            columnExe="ItemNo,Type,ItemName,Quantity,Price";//pdf column names
+            columnExe="ItemNo,Type,ItemName,Quantity,Price,OrigPrice";//pdf column names
             String [] colH=columnExe.split(",");
             int colL=0;
             colL=columnExe.split(",").length;
@@ -66,6 +66,10 @@ public PdfPTable getDatas(String tblName)
                 else if(colH[x].toString().equals("Price"))
                 {
                     colH[x]="Price";
+                }
+                else if(colH[x].toString().equals("OrigPrice"))
+                {
+                    colH[x]="OrigPrice";
                 }
                 
                 PdfPCell newHeader = new PdfPCell();
