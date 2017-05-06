@@ -9,11 +9,15 @@ import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Pattern;
+import javax.swing.JDialog;
+import javax.swing.JFrame;
+import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import static lmcpointofsalessystem.LMCPointofSalesSystem.s;
@@ -61,19 +65,25 @@ public static Statement s;
     int qua;
     String itemName;
     try {
-        String sql = ("select * from Stocks");
+        String sql = ("select ItemName from Stocks where Quantity<=10");
         rs = s.executeQuery(sql);
-        while(rs.next()){              
-            itemName = rs.getString("ItemName");
-            qua = rs.getInt("Quantity");
-       
-                 if(qua<=10){
-           
-                    JOptionPane.showMessageDialog(null,"Stocks are low (Below 10pcs): "+itemName);
-                }
-                 if(qua <= 0){
-                     JOptionPane.showMessageDialog(null,"Insufficient stock (0 pc): "+itemName);
-                 }
+        ArrayList<String> stocksList = new ArrayList<String>();
+        
+       while(rs.next()){
+            //qua = rs.getInt("Quantity");
+            stocksList.add(rs.getString("ItemName"));
+            //if(qua <= 10){
+            
+            
+            String[] arrOfString = (String[]) stocksList.toArray(new String[stocksList.size()]);
+            JOptionPane.showMessageDialog(null, new JList(arrOfString));
+            
+            //}
+            //if(qua <= 0){
+                //String[] arrOfString = (String[]) stocksList1.toArray(new String[stocksList1.size()]);
+                //JOptionPane.showMessageDialog(null, new JList(arrOfString));
+            //}
+                
         }
         } catch (SQLException ex) {
         Logger.getLogger(ManipulateStocks.class.getName()).log(Level.SEVERE, null, ex);
@@ -85,6 +95,7 @@ public static Statement s;
         LMCPointofSalesSystem connect = new LMCPointofSalesSystem();
         s=connect.s;
         con=connect.con;
+        lblUsern.setText(Login.U);
         fillTable();
         displayID();
         Clock();
@@ -148,6 +159,8 @@ public static Statement s;
         btnViewall = new javax.swing.JButton();
         lblPM = new javax.swing.JLabel();
         lblTimes = new javax.swing.JLabel();
+        jlabelsisiw = new javax.swing.JLabel();
+        lblUsern = new javax.swing.JLabel();
 
         jMenu3.setText("jMenu3");
 
@@ -166,8 +179,9 @@ public static Statement s;
         ));
         jScrollPane1.setViewportView(jTable1);
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Manage Stocks");
+        setType(java.awt.Window.Type.UTILITY);
 
         jPanel2.setBackground(new java.awt.Color(153, 153, 153));
 
@@ -578,25 +592,41 @@ public static Statement s;
         lblTimes.setForeground(new java.awt.Color(0, 255, 153));
         lblTimes.setText("jLabel13");
 
+        jlabelsisiw.setFont(new java.awt.Font("Comic Sans MS", 1, 12)); // NOI18N
+        jlabelsisiw.setForeground(new java.awt.Color(255, 255, 255));
+        jlabelsisiw.setText("Login in as:");
+
+        lblUsern.setFont(new java.awt.Font("Comic Sans MS", 1, 12)); // NOI18N
+        lblUsern.setForeground(new java.awt.Color(0, 255, 153));
+        lblUsern.setText("jLabel24");
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGap(22, 22, 22)
+                        .addComponent(jlabelsisiw)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(lblUsern)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(lblTimes)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(lblPM, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(0, 35, Short.MAX_VALUE))
+                        .addComponent(lblPM, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(0, 38, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblPM)
-                    .addComponent(lblTimes))
+                    .addComponent(lblTimes)
+                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jlabelsisiw)
+                        .addComponent(lblUsern)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(30, Short.MAX_VALUE))
@@ -723,8 +753,8 @@ public static Statement s;
     }//GEN-LAST:event_btnDeleteActionPerformed
 
     private void btnbackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnbackActionPerformed
-        AdminPanel ap = new AdminPanel();
-        ap.setVisible(true);
+        //AdminPanel ap = new AdminPanel();
+        //ap.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnbackActionPerformed
 
@@ -737,10 +767,17 @@ public static Statement s;
         try{
             int row = tblStocks.getSelectedRow();
             String table_click = (tblStocks.getModel().getValueAt(row, 0).toString());
-            if(jtpStock.getSelectedIndex()==2){
-                jtpStock.setSelectedIndex(2);
-            }else{
+            JFrame msg = new JFrame();
+            String[] options = new String[2];
+            options[0] = new String("Update");
+            options[1] = new String("Delete");
+            
+            int f = JOptionPane.showOptionDialog(msg.getContentPane(), "Which operation you want?", "Choose", 0,JOptionPane.INFORMATION_MESSAGE,null, options, null);
+            
+            if (f==0){
                 jtpStock.setSelectedIndex(1);
+            }if(f==1){
+                jtpStock.setSelectedIndex(2);
             }
             String sql = "select * from Stocks where ItemNo='"+table_click+"'";
             rs=s.executeQuery(sql);
@@ -1011,10 +1048,12 @@ public static Statement s;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JSpinner jSpinner1;
     private javax.swing.JTable jTable1;
+    private javax.swing.JLabel jlabelsisiw;
     private javax.swing.JTabbedPane jtpStock;
     private javax.swing.JLabel lblItemNo;
     private javax.swing.JLabel lblPM;
     private javax.swing.JLabel lblTimes;
+    private javax.swing.JLabel lblUsern;
     private javax.swing.JSpinner spnQty;
     private javax.swing.JSpinner spnuQty;
     private javax.swing.JTable tblStocks;

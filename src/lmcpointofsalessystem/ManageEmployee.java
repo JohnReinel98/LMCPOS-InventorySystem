@@ -61,6 +61,7 @@ public static Statement s;
         con=connect.con;
         initComponents();
         this.setLocationRelativeTo(null);
+        lblUsern.setText(Login.U);
         fillTable();
         Clock();
         displayID();
@@ -136,6 +137,8 @@ public static Statement s;
         btnViewAll = new javax.swing.JButton();
         lblAM = new javax.swing.JLabel();
         lblTime = new javax.swing.JLabel();
+        jlabelsisiw = new javax.swing.JLabel();
+        lblUsern = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Manage Employees");
@@ -294,12 +297,11 @@ public static Statement s;
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                         .addComponent(txtaConfPass)))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(cbShow)))
-                        .addGap(1, 1, 1))
+                                .addComponent(cbShow))))
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(btnback)))
-                .addContainerGap(143, Short.MAX_VALUE))
+                .addContainerGap(144, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -692,17 +694,30 @@ public static Statement s;
         lblTime.setForeground(new java.awt.Color(0, 255, 153));
         lblTime.setText("jLabel19");
 
+        jlabelsisiw.setFont(new java.awt.Font("Comic Sans MS", 1, 12)); // NOI18N
+        jlabelsisiw.setForeground(new java.awt.Color(255, 255, 255));
+        jlabelsisiw.setText("Login in as:");
+
+        lblUsern.setFont(new java.awt.Font("Comic Sans MS", 1, 12)); // NOI18N
+        lblUsern.setForeground(new java.awt.Color(0, 255, 153));
+        lblUsern.setText("jLabel24");
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(27, 27, 27)
+                        .addComponent(jlabelsisiw)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(lblUsern)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(lblTime)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(lblAM))
-                    .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(lblAM)))
                 .addGap(0, 38, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -710,7 +725,9 @@ public static Statement s;
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblAM)
-                    .addComponent(lblTime))
+                    .addComponent(lblTime)
+                    .addComponent(jlabelsisiw)
+                    .addComponent(lblUsern))
                 .addGap(12, 12, 12)
                 .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(24, Short.MAX_VALUE))
@@ -844,6 +861,13 @@ public static Statement s;
         {
             JOptionPane.showMessageDialog(this, "Please Input a Contact !");
         }
+        else if(Pattern.matches("[a-zA-Z]+",contact)==true&& contact.length() >= 1){
+            JOptionPane.showMessageDialog(null, "Please Input a Phone Number!");
+            txtaContact.setText("");
+        }
+        else if(contact.length()  <11 || contact.length() > 11){
+            JOptionPane.showMessageDialog(null, "Please Input 11 Numbers");
+        }
         else{
         try {
             s.executeUpdate("Update Employees Set FName  = '"+FName+"',LName = '"+LName+"',Username = '"+username+"',Password = '"+password+"', Address = '"+address+"',Contact = '"+contact+"' where empID =('"+EmpId+"')");
@@ -898,10 +922,19 @@ public static Statement s;
         try{
             int row = tblEmp.getSelectedRow();
             String table_click = (tblEmp.getModel().getValueAt(row, 0).toString());
-            if(jtpEmployee.getSelectedIndex()==3){
-                jtpEmployee.setSelectedIndex(3);
-            }else{
+            
+            JFrame msg = new JFrame();
+            String[] options = new String[3];
+            options[0] = new String("Update");
+            options[1] = new String("Delete");
+            options[2] = new String("Block/Unblock");
+            int f = JOptionPane.showOptionDialog(msg.getContentPane(), "Which operation you want?", "Choose", 0,JOptionPane.INFORMATION_MESSAGE,null, options, null);
+            if (f==0){
                 jtpEmployee.setSelectedIndex(1);
+            }if(f==1){
+                jtpEmployee.setSelectedIndex(2);
+            }if(f==2){
+                jtpEmployee.setSelectedIndex(3);
             }
             
             String sql = "select * from Employees where empID='"+table_click+"'";
@@ -1050,8 +1083,10 @@ public static Statement s;
     
      void fillTable(){
         try {
+            String tmpID = Login.tmpID;
             tblModel = (DefaultTableModel)tblEmp.getModel();
-            rs = s.executeQuery("Select * from  Employees where Type=0" );
+            rs = s.executeQuery("Select * from  Employees where empID!= "+tmpID+"" );
+            //rs = s.executeQuery("Select * from  Employees" );
             ResultSetMetaData md = rs.getMetaData();
             int row = tblModel.getRowCount();
             while(row>0)
@@ -1068,7 +1103,7 @@ public static Statement s;
                 tblModel.addRow(data);
             }
         } catch (SQLException ex) {
-            System.out.println("Error");
+            System.out.println("Error"+ex);
         }
     }
     
@@ -1226,9 +1261,11 @@ public static Statement s;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;
     private javax.swing.JScrollPane jScrollPane5;
+    private javax.swing.JLabel jlabelsisiw;
     private javax.swing.JTabbedPane jtpEmployee;
     private javax.swing.JLabel lblAM;
     private javax.swing.JLabel lblTime;
+    private javax.swing.JLabel lblUsern;
     private javax.swing.JLabel lblValid;
     private javax.swing.JLabel lblaID;
     private javax.swing.JTable tblEmp;

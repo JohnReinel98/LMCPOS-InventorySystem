@@ -1,12 +1,18 @@
 package lmcpointofsalessystem;
 
+import static java.lang.Thread.sleep;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.TreeMap;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartFrame;
 import org.jfree.chart.JFreeChart;
@@ -25,12 +31,39 @@ public class SalesReport extends javax.swing.JFrame {
     public static Statement s;
     public static Connection con;
     ResultSet rs;
+    public void Clock (){
+        Thread clock = new Thread(){
+            public void run(){
+                try {
+                    while(true){
+                    Calendar cal = new GregorianCalendar();
+                    int day=cal.get(Calendar.DAY_OF_MONTH);
+                    int month=cal.get(Calendar.MONTH);
+                    int year=cal.get(Calendar.YEAR);
+        
+                    int second=cal.get(Calendar.SECOND);
+                    int minute=cal.get(Calendar.MINUTE);
+                    int hour=cal.get(Calendar.HOUR);
+                    SimpleDateFormat sdf = new SimpleDateFormat("a");
+                    lblPM.setText(sdf.format(cal.getTime()));
+                    lblTimes.setText("Time "+month+"/"+day+"/"+year+" "+hour+":"+minute+":"+second+"");
+                    sleep(1000);
+                    }
+                } catch (InterruptedException ex) {
+                    Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        };
+        clock.start();
+    }
     public SalesReport() {
         initComponents();
         this.setLocationRelativeTo(null);
         LMCPointofSalesSystem connect = new LMCPointofSalesSystem();
         s=connect.s;
         con=connect.con;
+        lblUsern.setText(Login.U);
+        Clock();
     }
 
     @SuppressWarnings("unchecked")
@@ -47,13 +80,18 @@ public class SalesReport extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
+        jlabelsisiw = new javax.swing.JLabel();
+        lblUsern = new javax.swing.JLabel();
+        lblTimes = new javax.swing.JLabel();
+        lblPM = new javax.swing.JLabel();
 
         jLabel3.setFont(new java.awt.Font("Trebuchet MS", 1, 24)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(51, 51, 51));
         jLabel3.setText("Profits");
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Sales Report");
+        setType(java.awt.Window.Type.UTILITY);
 
         jPanel1.setBackground(new java.awt.Color(153, 153, 153));
 
@@ -150,20 +188,53 @@ public class SalesReport extends javax.swing.JFrame {
                 .addGap(14, 14, 14))
         );
 
+        jlabelsisiw.setFont(new java.awt.Font("Comic Sans MS", 1, 12)); // NOI18N
+        jlabelsisiw.setForeground(new java.awt.Color(255, 255, 255));
+        jlabelsisiw.setText("Login in as:");
+
+        lblUsern.setFont(new java.awt.Font("Comic Sans MS", 1, 12)); // NOI18N
+        lblUsern.setForeground(new java.awt.Color(0, 255, 153));
+        lblUsern.setText("jLabel24");
+
+        lblTimes.setFont(new java.awt.Font("Comic Sans MS", 1, 12)); // NOI18N
+        lblTimes.setForeground(new java.awt.Color(0, 255, 153));
+        lblTimes.setText("jLabel13");
+
+        lblPM.setFont(new java.awt.Font("Comic Sans MS", 1, 12)); // NOI18N
+        lblPM.setForeground(new java.awt.Color(0, 255, 153));
+        lblPM.setText("jLabel12");
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 47, Short.MAX_VALUE))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(33, 33, 33)
+                        .addComponent(jlabelsisiw)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(lblUsern)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(lblTimes)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(lblPM, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(8, 8, 8)))
+                .addGap(0, 44, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(27, 27, 27)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jlabelsisiw)
+                    .addComponent(lblUsern)
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(lblPM)
+                        .addComponent(lblTimes)))
+                .addGap(9, 9, 9)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(7, Short.MAX_VALUE))
+                .addContainerGap(28, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -382,8 +453,8 @@ public class SalesReport extends javax.swing.JFrame {
     }//GEN-LAST:event_btnPieChartActionPerformed
 
     private void btnBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBackActionPerformed
-         AdminPanel adm = new AdminPanel();
-        adm.setVisible(true);
+        //AdminPanel adm = new AdminPanel();
+        //adm.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnBackActionPerformed
 
@@ -430,5 +501,9 @@ public class SalesReport extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
+    private javax.swing.JLabel jlabelsisiw;
+    private javax.swing.JLabel lblPM;
+    private javax.swing.JLabel lblTimes;
+    private javax.swing.JLabel lblUsern;
     // End of variables declaration//GEN-END:variables
 }

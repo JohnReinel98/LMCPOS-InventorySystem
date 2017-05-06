@@ -24,6 +24,8 @@ import static lmcpointofsalessystem.LMCPointofSalesSystem.s;
  */
 public class Login extends javax.swing.JFrame {
     ResultSet rs;
+    public static String U;
+    public static String tmpID;
     public String checkid="",block = "";
     public int count =0;
     public void Clock (){
@@ -284,7 +286,7 @@ public class Login extends javax.swing.JFrame {
                         .addComponent(lblPowerUser)))
                 .addGap(18, 18, 18)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(28, Short.MAX_VALUE))
+                .addContainerGap(32, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -315,12 +317,11 @@ public class Login extends javax.swing.JFrame {
                 Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
             }
     }
-    String U;
+    
     private void btnLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoginActionPerformed
        String sql;
        U = txtUsername.getText().toLowerCase();
-       GetterSetter gs = new GetterSetter();
-       gs.setUser(U);
+       
        if (checkid.equals(U))
        {
            System.out.print("");
@@ -352,10 +353,11 @@ public class Login extends javax.swing.JFrame {
           "' and Password ='" + txtPassword.getText() + "'");
 
             if(rs.next()) {
+            tmpID = rs.getString("empID");
             String Username = rs.getString("Username");
             String Password = rs.getString("Password");
             String Admin = rs.getString("Type");
-
+            
         if (Username.equalsIgnoreCase(U) & Password.equalsIgnoreCase(txtPassword.getText()) &
             Admin.equals("0")) 
         {
@@ -413,7 +415,7 @@ public class Login extends javax.swing.JFrame {
                     timer.start();
 
                     dialog.setVisible(true);
-                    AdminPanel ap = new AdminPanel();
+                    MainMenu ap = new MainMenu();
                     ap.setVisible(true);
                     System.out.println("Programmed by JRC and Friends");
                     this.setVisible(false);
@@ -557,7 +559,7 @@ public class Login extends javax.swing.JFrame {
                             timer.start();
 
                             dialog.setVisible(true);
-                            AdminPanel ap = new AdminPanel();
+                            MainMenu ap = new MainMenu();
                             ap.setVisible(true);
                             System.out.println("Programmed by JRC and Friends");
                             this.setVisible(false);
@@ -694,7 +696,7 @@ public class Login extends javax.swing.JFrame {
                             timer.start();
 
                             dialog.setVisible(true);
-                            AdminPanel ap = new AdminPanel();
+                            MainMenu ap = new MainMenu();
                             ap.setVisible(true);
                             System.out.println("Programmed by JRC and Friends");
                             this.setVisible(false);
@@ -734,7 +736,7 @@ public class Login extends javax.swing.JFrame {
           }
         }
         else if(evt.getKeyCode()==KeyEvent.VK_ALT && evt.getKeyCode()==KeyEvent.VK_F3){
-            AdminPanel ap = new AdminPanel();
+            MainMenu ap = new MainMenu();
             ap.setVisible(true);
             this.dispose();
         }
@@ -821,6 +823,6 @@ public class Login extends javax.swing.JFrame {
     private javax.swing.JLabel lblPowerUser;
     private javax.swing.JLabel lblTime;
     private javax.swing.JPasswordField txtPassword;
-    private javax.swing.JTextField txtUsername;
+    public javax.swing.JTextField txtUsername;
     // End of variables declaration//GEN-END:variables
 }
