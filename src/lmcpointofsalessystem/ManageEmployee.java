@@ -748,6 +748,7 @@ public static Statement s;
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
+        String EmpId = lblaID.getText();
         String FName = txtaFname.getText();
         String LName = txtaLname.getText();
         String username = txtaUsername.getText();
@@ -800,7 +801,7 @@ public static Statement s;
             JOptionPane.showMessageDialog(rootPane, "Password does not match!");
         }
         else{
-        JOptionPane.showMessageDialog(rootPane, "Successfully Added");
+        JOptionPane.showMessageDialog(rootPane, "Employee ID: " + EmpId + "\n" + "Successfully Added");
         fillTable();
         clear();
              try {
@@ -879,7 +880,7 @@ public static Statement s;
             JOptionPane.showMessageDialog(rootPane, "Password does not match!");
         }
         else{
-        JOptionPane.showMessageDialog(rootPane, "Successfully Updated");
+        JOptionPane.showMessageDialog(rootPane, "Employee ID: " + EmpId + "\n" + "Successfully Updated");
         fillTable();
         clear();
         }
@@ -897,9 +898,18 @@ public static Statement s;
             rs=s.executeQuery(sql);
             if(rs.next()){
             String ID = rs.getString("empID");
+            String Fname = rs.getString("Fname");
+            String Lname = rs.getString("Lname");
+            String Usern = rs.getString("Username");
+            String Passw = rs.getString("Password");
+            String Addr = rs.getString("Address");
+            String Contact = rs.getString("Contact");
+            int type = rs.getInt("Type");
+            String BlockStatus = rs.getString("BlockStatus");
                 if(EmpId.equals(ID)){
+                    s.executeUpdate("insert into ArchivedEmployees values('"+ID+"','"+Fname+"','"+Lname+"','"+Usern+"','"+Passw+"','"+Addr+"','"+Contact+"',"+type+",'"+BlockStatus+"')");
                     s.executeUpdate("delete from Employees where empID= ('"+EmpId+"')");
-                    JOptionPane.showMessageDialog(rootPane, "Successfully Deleted");
+                    JOptionPane.showMessageDialog(rootPane, "Employee ID: " + EmpId + "\n" + "Successfully Archived!");
                     clear();
                     fillTable();
                 }

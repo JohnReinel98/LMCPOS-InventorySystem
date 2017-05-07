@@ -540,12 +540,13 @@ public class ManageCustomers extends javax.swing.JFrame {
         jPanel6Layout.setVerticalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel6Layout.createSequentialGroup()
-                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblAM)
-                    .addComponent(lblTime)
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jlabelsisiw)
-                        .addComponent(lblUsern)))
+                        .addComponent(lblUsern))
+                    .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(lblAM)
+                        .addComponent(lblTime)))
                 .addGap(12, 12, 12)
                 .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(35, Short.MAX_VALUE))
@@ -584,7 +585,7 @@ public class ManageCustomers extends javax.swing.JFrame {
     }//GEN-LAST:event_txtaLnameActionPerformed
 
     private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
-        
+        String custID = lblaID.getText();
         String fname= txtaFname.getText();
         String lname= txtaLname.getText();
         String address= txtaAddress.getText();
@@ -619,7 +620,7 @@ public class ManageCustomers extends javax.swing.JFrame {
         catch (SQLException ex) {
             System.out.println(ex);
         }
-        JOptionPane.showMessageDialog(rootPane, "Successfully Added");
+        JOptionPane.showMessageDialog(rootPane, "Customer ID: " + custID + "\n" + "Successfully Added");
         clearCust();
         fillTable();
         try {
@@ -638,18 +639,23 @@ public class ManageCustomers extends javax.swing.JFrame {
     }//GEN-LAST:event_btnAddActionPerformed
 
     private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
-        int CustId = Integer.parseInt(txtdCustID.getText().toString());
+        int custID = Integer.parseInt(txtdCustID.getText().toString());
         JFrame msg = new JFrame();
         int f = JOptionPane.showConfirmDialog(msg, "Delete Record? This can not be undone!", "Delete", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
         if (f==0){
            try {
-            String sql = "select * from Customers where CustomerID='"+CustId+"'";
+            String sql = "select * from Customers where CustomerID='"+custID+"'";
             rs=s.executeQuery(sql);
             if(rs.next()){
             int ID = rs.getInt("CustomerID");
-                if(CustId == ID){
-                    s.executeUpdate("delete from Customers where CustomerID= ('"+CustId+"')");
-                    JOptionPane.showMessageDialog(rootPane, "Successfully Deleted");
+            String Fname = rs.getString("FirstName");
+            String Lname = rs.getString("LastName");
+            String Addr = rs.getString("Address");
+            String Contact = rs.getString("ContactNumber");
+                if(custID == ID){
+                    s.executeUpdate("insert into ArchivedCustomers values('"+ID+"','"+Fname+"','"+Lname+"','"+Addr+"','"+Contact+"')");
+                    s.executeUpdate("delete from Customers where CustomerID= ('"+custID+"')");
+                    JOptionPane.showMessageDialog(rootPane, "Customer ID: " + custID + "\n" + "Successfully Archived!");
                     clearCust();
                     fillTable();
                 }
@@ -703,7 +709,7 @@ public class ManageCustomers extends javax.swing.JFrame {
         catch (SQLException ex) {
             System.out.println(ex);
         }
-        JOptionPane.showMessageDialog(rootPane, "Successfully Updated!");
+        JOptionPane.showMessageDialog(rootPane, "Customer ID: " + custID + "\n" + "Successfully Updated!");
         clearCust();
         fillTable();
         }

@@ -75,8 +75,8 @@ public static Statement s;
             //if(qua <= 10){
             
             
-            String[] arrOfString = (String[]) stocksList.toArray(new String[stocksList.size()]);
-            JOptionPane.showMessageDialog(null, new JList(arrOfString));
+            //String[] arrOfString = (String[]) stocksList.toArray(new String[stocksList.size()]);
+            //JOptionPane.showMessageDialog(null, new JList(arrOfString));
             
             //}
             //if(qua <= 0){
@@ -85,6 +85,8 @@ public static Statement s;
             //}
                 
         }
+        String[] arrOfString = (String[]) stocksList.toArray(new String[stocksList.size()]);
+        JOptionPane.showMessageDialog(null, new JList(arrOfString));
         } catch (SQLException ex) {
         Logger.getLogger(ManipulateStocks.class.getName()).log(Level.SEVERE, null, ex);
     }
@@ -621,12 +623,13 @@ public static Statement s;
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblPM)
-                    .addComponent(lblTimes)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jlabelsisiw)
-                        .addComponent(lblUsern)))
+                        .addComponent(lblUsern))
+                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(lblPM)
+                        .addComponent(lblTimes)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(30, Short.MAX_VALUE))
@@ -648,6 +651,7 @@ public static Statement s;
 
     private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
      try{
+        String itemno = lblItemNo.getText();
         String type= cmbType.getSelectedItem().toString();
         String name= txtName.getText();
         Object qty = spnQty.getValue().toString();
@@ -675,7 +679,7 @@ public static Statement s;
         catch (SQLException ex) {
             System.out.println(ex);
         }
-        JOptionPane.showMessageDialog(rootPane, "Successfully Added");
+        JOptionPane.showMessageDialog(rootPane, "Stock ID: " + itemno + "\n" + "Successfully Added");
         fillTable();
         clear();
         try {
@@ -731,7 +735,7 @@ public static Statement s;
         catch (SQLException ex) {
             System.out.println(ex);
         }
-        JOptionPane.showMessageDialog(rootPane, "Successfully Updated!");
+        JOptionPane.showMessageDialog(rootPane, "Stock ID: " + itemno + "\n" + "Successfully Updated!");
         fillTable();
         clear();
         }
@@ -739,17 +743,34 @@ public static Statement s;
 
     private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
         String itemno = txtitemno1.getText();
-
+        JFrame msg = new JFrame();
+        int f = JOptionPane.showConfirmDialog(msg, "Delete Record? This can not be undone!", "Delete", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+        if (f==0){
         try {
-            s.executeUpdate("delete from Stocks where itemNo= ('"+itemno+"')");
-            JOptionPane.showMessageDialog(rootPane, "Successfully Deleted!");
-            fillTable();
+            String sql = "select * from Stocks where ItemNo='"+itemno+"'";
+            rs=s.executeQuery(sql);
+            if(rs.next()){
+            int ID = rs.getInt("ItemNo");
+            String Type = rs.getString("Type");
+            String ItemName = rs.getString("ItemName");
+            int Quantity = rs.getInt("Quantity");
+            float Price = rs.getFloat("Price");
+            float OrigPrice = rs.getFloat("OrigPrice");
+                //if(itemno == String.valueOf(ID)){
+                s.executeUpdate("insert into ArchivedStocks values('"+ID+"','"+Type+"','"+ItemName+"',"+Quantity+","+Price+","+OrigPrice+")");
+                s.executeUpdate("delete from Stocks where itemNo= ('"+itemno+"')");
+                JOptionPane.showMessageDialog(rootPane, "Stock ID: " + itemno + "\n" + "Successfully Archived!");
+                fillTable();
+                //}
+            }else{
+            JOptionPane.showMessageDialog(rootPane, "ID not found!");
+            }
         }
         catch (SQLException ex) {
             JOptionPane.showMessageDialog(rootPane, "Invalid Input !");
         }
+        }
          
-        
     }//GEN-LAST:event_btnDeleteActionPerformed
 
     private void btnbackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnbackActionPerformed
