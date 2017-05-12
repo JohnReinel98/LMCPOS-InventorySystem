@@ -107,7 +107,7 @@ public class PoweruserValidate extends javax.swing.JFrame {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 63, Short.MAX_VALUE))
+                .addGap(0, 41, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -133,9 +133,12 @@ public class PoweruserValidate extends javax.swing.JFrame {
 
     private void btnLogActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLogActionPerformed
         if(txtUser.getText().equals("admin123")&& txtPass.getText().equals("admin123")){
-            ManageEmployee ep = new ManageEmployee();
+            PoweruserBlockUnblock ep = new PoweruserBlockUnblock();
             ep.setVisible(true);
             this.dispose();
+        }else{
+            JOptionPane.showMessageDialog(null, "Incorrect Input!");
+            txtPass.setText("");
         }
     }//GEN-LAST:event_btnLogActionPerformed
 
@@ -145,6 +148,7 @@ public class PoweruserValidate extends javax.swing.JFrame {
         if (f==0){
             Login lg = new Login();
             lg.setVisible(true);
+            this.dispose();
         }
     }//GEN-LAST:event_btnExitActionPerformed
 

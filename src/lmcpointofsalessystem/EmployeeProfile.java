@@ -35,6 +35,10 @@ public class EmployeeProfile extends javax.swing.JFrame {
         btnSave = new javax.swing.JButton();
         lblImageName = new javax.swing.JLabel();
         btnCancelUp = new javax.swing.JButton();
+        jlabelsisiw = new javax.swing.JLabel();
+        lblUsern = new javax.swing.JLabel();
+        lblTime = new javax.swing.JLabel();
+        lblAM = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Edit Profile");
@@ -104,20 +108,52 @@ public class EmployeeProfile extends javax.swing.JFrame {
                 .addContainerGap(179, Short.MAX_VALUE))
         );
 
+        jlabelsisiw.setFont(new java.awt.Font("Comic Sans MS", 1, 12)); // NOI18N
+        jlabelsisiw.setForeground(new java.awt.Color(255, 255, 255));
+        jlabelsisiw.setText("Login in as:");
+
+        lblUsern.setFont(new java.awt.Font("Comic Sans MS", 1, 12)); // NOI18N
+        lblUsern.setForeground(new java.awt.Color(0, 255, 153));
+        lblUsern.setText("jLabel24");
+
+        lblTime.setFont(new java.awt.Font("Comic Sans MS", 1, 12)); // NOI18N
+        lblTime.setForeground(new java.awt.Color(0, 255, 153));
+        lblTime.setText("jLabel13");
+
+        lblAM.setFont(new java.awt.Font("Comic Sans MS", 1, 12)); // NOI18N
+        lblAM.setForeground(new java.awt.Color(0, 255, 153));
+        lblAM.setText("jLabel12");
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 50, Short.MAX_VALUE))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jlabelsisiw)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(lblUsern)
+                        .addGap(469, 469, 469)
+                        .addComponent(lblTime)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(lblAM, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(0, 43, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(26, 26, 26)
+                .addContainerGap()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jlabelsisiw)
+                    .addComponent(lblUsern)
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(lblAM)
+                        .addComponent(lblTime)))
+                .addGap(9, 9, 9)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(42, Short.MAX_VALUE))
+                .addContainerGap(35, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -233,7 +269,11 @@ public class EmployeeProfile extends javax.swing.JFrame {
     private javax.swing.JButton btnSave;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
+    private javax.swing.JLabel jlabelsisiw;
+    private javax.swing.JLabel lblAM;
     private javax.swing.JLabel lblImageName;
     private javax.swing.JLabel lblProfileImage;
+    private javax.swing.JLabel lblTime;
+    private javax.swing.JLabel lblUsern;
     // End of variables declaration//GEN-END:variables
 }

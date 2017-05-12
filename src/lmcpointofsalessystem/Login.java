@@ -384,7 +384,7 @@ public class Login extends javax.swing.JFrame {
                     timer.start();
 
                     dialog.setVisible(true);
-                    EmployeePanel ep = new EmployeePanel();
+                    MainMenuEmployee ep = new MainMenuEmployee();
             ep.setVisible(true);
             this.setVisible(false);
 
@@ -498,6 +498,7 @@ public class Login extends javax.swing.JFrame {
                   "' and Password ='" + txtPassword.getText() + "'");
 
                     if(rs.next()) {
+                    tmpID = rs.getString("empID");
                     String Username = rs.getString("Username");
                     String Password = rs.getString("Password");
                     String Admin = rs.getString("Type");
@@ -528,7 +529,7 @@ public class Login extends javax.swing.JFrame {
                             timer.start();
 
                             dialog.setVisible(true);
-                            EmployeePanel ep = new EmployeePanel();
+                            MainMenuEmployee ep = new MainMenuEmployee();
                     ep.setVisible(true);
                     this.setVisible(false);
 
@@ -635,6 +636,7 @@ public class Login extends javax.swing.JFrame {
                   "' and Password ='" + txtPassword.getText() + "'");
 
                     if(rs.next()) {
+                    tmpID = rs.getString("empID");
                     String Username = rs.getString("Username");
                     String Password = rs.getString("Password");
                     String Admin = rs.getString("Type");
@@ -665,7 +667,7 @@ public class Login extends javax.swing.JFrame {
                             timer.start();
 
                             dialog.setVisible(true);
-                            EmployeePanel ep = new EmployeePanel();
+                            MainMenuEmployee ep = new MainMenuEmployee();
                     ep.setVisible(true);
                     this.setVisible(false);
 
@@ -752,13 +754,13 @@ public class Login extends javax.swing.JFrame {
         if(evt.getClickCount()==3){
             PoweruserValidate pv = new PoweruserValidate();
             pv.setVisible(true);
-            this.dispose();
+            //this.dispose();
         }
     }//GEN-LAST:event_lblPowerUserMouseClicked
 
     private void jPanel2KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jPanel2KeyPressed
         if(evt.getKeyCode()==KeyEvent.VK_ENTER && evt.getKeyCode()==KeyEvent.VK_F3){
-            AdminPanel ap = new AdminPanel();
+            MainMenu ap = new MainMenu();
             ap.setVisible(true);
             this.dispose();
         }

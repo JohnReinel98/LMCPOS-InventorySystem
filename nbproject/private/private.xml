@@ -6,12 +6,15 @@
             <file>file:/C:/Users/JohnReinel/Desktop/LMCPOS-InventorySystem/src/lmcpointofsalessystem/ManipulateStocksAdmin.java</file>
             <file>file:/C:/Users/JohnReinel/Desktop/LMCPOS-InventorySystem/src/lmcpointofsalessystem/EmployeeProfile.java</file>
             <file>file:/C:/Users/JohnReinel/Desktop/LMCPOS-InventorySystem/src/lmcpointofsalessystem/MainMenu.java</file>
-            <file>file:/C:/Users/JohnReinel/Desktop/LMCPOS-InventorySystem/src/lmcpointofsalessystem/CreateOrderAdmin.java</file>
+            <file>file:/C:/Users/JohnReinel/Desktop/LMCPOS-InventorySystem/src/lmcpointofsalessystem/CreateOrder.java</file>
             <file>file:/C:/Users/JohnReinel/Desktop/LMCPOS-InventorySystem/src/lmcpointofsalessystem/PoweruserValidate.java</file>
-            <file>file:/C:/Users/JohnReinel/Desktop/LMCPOS-InventorySystem/src/lmcpointofsalessystem/SalesReport.java</file>
+            <file>file:/C:/Users/JohnReinel/Desktop/LMCPOS-InventorySystem/src/lmcpointofsalessystem/PoweruserBlockUnblock.java</file>
+            <file>file:/C:/Users/JohnReinel/Desktop/LMCPOS-InventorySystem/src/lmcpointofsalessystem/ManipulateStocksEmployee.java</file>
             <file>file:/C:/Users/JohnReinel/Desktop/LMCPOS-InventorySystem/src/lmcpointofsalessystem/Login.java</file>
             <file>file:/C:/Users/JohnReinel/Desktop/LMCPOS-InventorySystem/src/lmcpointofsalessystem/ManageEmployee.java</file>
             <file>file:/C:/Users/JohnReinel/Desktop/LMCPOS-InventorySystem/src/lmcpointofsalessystem/ManageCustomers.java</file>
+            <file>file:/C:/Users/JohnReinel/Desktop/LMCPOS-InventorySystem/src/lmcpointofsalessystem/ManageCustomersEmployee.java</file>
+            <file>file:/C:/Users/JohnReinel/Desktop/LMCPOS-InventorySystem/src/lmcpointofsalessystem/MainMenuEmployee.java</file>
         </group>
     </open-files>
 </project-private>
